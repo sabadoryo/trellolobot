@@ -14,6 +14,11 @@ const userStates = ["b", "l", "m"]
 
 bot.onText(/\/start/, async (msg, match) => {
     const chatId = msg.chat.id;
+
+    if (!userMap[chatId]) {
+        bot.sendMessage(chatId, "Этот бот позволяет создать вам карточку на доске Trello платформы The Way.")
+    }
+
     
     try {  
         userMap[chatId] = {"state" : "b"};
@@ -37,7 +42,7 @@ bot.onText(/\/start/, async (msg, match) => {
             ])
         });
 
-        bot.sendMessage(chatId, "Выберите доску:", opts);   
+        bot.sendMessage(chatId, "Для начала выберите доску:", opts);   
     }
     catch (err) {
         console.log(err);
