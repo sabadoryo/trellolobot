@@ -73,7 +73,7 @@ bot.on('callback_query', async (query) => {
             userMap[chatId]["boardId"] = cbData[1];
             userMap[chatId]["state"] = "l";
             
-            bot.sendMessage(query.from.id, `Выберите колонку на доске ${cbData[2]}:`, opts);
+            bot.sendMessage(query.from.id, `Выберите колонку с выбранной доски`, opts);
         }
 
         if (cbData[0] === 'l') {
