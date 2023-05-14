@@ -27,12 +27,12 @@ bot.onText(/\/start/, async (msg, match) => {
                 inline_keyboard: []
             }
         };
-
+        console.log(boards);
         boards.forEach(element => {
             opts.reply_markup.inline_keyboard.push([
                 {
                     text: element.name,
-                    callback_data: "b:"+element.id+`:${element.name}`
+                    callback_data: "b:"+element.id
                 }
             ])
         });
@@ -54,7 +54,7 @@ bot.on('callback_query', async (query) => {
             const boardId = cbData[1];
     
             const boardLists = await trello.getListsOnBoard(boardId, "name");
-    
+            console.log(boardLists);
             const opts = {
                 reply_markup: {
                   inline_keyboard: []
@@ -65,14 +65,13 @@ bot.on('callback_query', async (query) => {
                 opts.reply_markup.inline_keyboard.push([
                     {
                         text: list.name,
-                        callback_data: "l:" + list.id + `:${list.name}`
+                        callback_data: "l:" + list.id
                     }
                 ])
             })
                 
             userMap[chatId]["boardId"] = cbData[1];
             userMap[chatId]["state"] = "l";
-            userMap[chatId]["boardName"] = cbData[2];
             
             bot.sendMessage(query.from.id, `Выберите колонку на доске ${cbData[2]}:`, opts);
         }
@@ -81,7 +80,6 @@ bot.on('callback_query', async (query) => {
             const listId = cbData[1];
             userMap[chatId]["listId"] = listId;
             userMap[chatId]["state"] = "m";
-            userMap[chatId]["listName"] = cbData[2];
             await bot.sendMessage(query.from.id, "Введите название и описание для новой карточки через новую строку\nПример:\nСогласовать бюджет\nКто нибудь согласуйте бюджет с @johndoe");
         }
     }
@@ -111,7 +109,7 @@ bot.on('message', async (msg) => {
                         idList: userMap[chatId]["listId"]
                     })
 
-                    bot.sendMessage(chatId, `Карточка была создана на доске ${userMap[chatId]["boardName"]} в колонке ${userMap[chatId]["listName"]}\n Чтобы добавить еще введите /start`);
+                    bot.sendMessage(chatId, `Карточка была создана!\n Чтобы добавить еще введите /start`);
                 }
             }
         }
