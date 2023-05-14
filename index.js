@@ -32,7 +32,6 @@ bot.onText(/\/start/, async (msg, match) => {
                 inline_keyboard: []
             }
         };
-        console.log(boards);
         boards.forEach(element => {
             opts.reply_markup.inline_keyboard.push([
                 {
